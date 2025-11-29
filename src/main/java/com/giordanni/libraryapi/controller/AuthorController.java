@@ -7,9 +7,10 @@ import com.giordanni.libraryapi.exceptions.OperationNorPermittedException;
 import com.giordanni.libraryapi.exceptions.RegisterDuplicateException;
 import com.giordanni.libraryapi.model.Author;
 import com.giordanni.libraryapi.services.AuthorServices;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,7 +28,7 @@ public class AuthorController {
     private final AuthorServices authorServices;
 
     @PostMapping
-    public ResponseEntity<Object> createAuthor(@RequestBody AuthorDTOs authorDto) {
+    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTOs authorDto) {
         try {
             var entityAuthor = authorDto.mapperDtoToAuthor();
             authorServices.createAuthor(entityAuthor);
@@ -93,7 +94,7 @@ public class AuthorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateAuthor(@PathVariable("id") UUID id, @RequestBody AuthorDTOs dtOs){
+    public ResponseEntity<Object> updateAuthor(@PathVariable("id") UUID id, @RequestBody @Valid AuthorDTOs dtOs){
         try {
             Optional<Author> authorOtional = authorServices.getByIdAuthor(id);
             if(authorOtional.isEmpty()) return ResponseEntity.notFound().build();
