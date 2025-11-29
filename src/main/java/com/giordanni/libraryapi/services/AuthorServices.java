@@ -1,12 +1,13 @@
 package com.giordanni.libraryapi.services;
 
-import com.fasterxml.jackson.annotation.OptBoolean;
 import com.giordanni.libraryapi.exceptions.OperationNorPermittedException;
 import com.giordanni.libraryapi.model.Author;
 import com.giordanni.libraryapi.repository.IAuthorRepository;
 import com.giordanni.libraryapi.repository.IBookRepository;
 import com.giordanni.libraryapi.validators.AuthorValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,6 +49,23 @@ public class AuthorServices {
             return authorRepository.findByNationality(nationality);
         }
         return authorRepository.findAll();
+    }
+
+    public List<Author> searchAuthorsByExample(String name, String nationality){
+        var author = new Author();
+        author.setName(name);
+        author.setNationality(nationality);
+
+        // serve para poder dizer quais os operações quero na pesquisa
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreNullValues()
+                .withIgnorePaths("id", "birthDate")
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<Author> authorExample = Example.of(author, matcher);
+
+        return authorRepository.findAll(authorExample);
     }
 
     public Author updateAuthor(Author author) {
