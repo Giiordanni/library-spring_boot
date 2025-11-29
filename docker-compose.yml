@@ -1,0 +1,19 @@
+services:
+  postgres-library:
+    image: postgres:17.4
+    container_name: library
+    environment:
+      POSTGRES_USER: library_user
+      POSTGRES_PASSWORD: library_pass
+      POSTGRES_DB: library_db
+    ports:
+      - "5439:5432"
+    volumes:
+      - postgres-library-data:/var/lib/postgresql/data
+    networks:
+      - library-network
+
+volumes:
+  postgres-library-data:
+networks:
+  library-network:
