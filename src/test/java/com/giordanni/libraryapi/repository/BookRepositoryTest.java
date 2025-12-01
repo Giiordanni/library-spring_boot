@@ -34,7 +34,7 @@ class BookRepositoryTest {
                 .findById(UUID.fromString("8fe19d5d-bf46-4db8-9abd-550aebeaecf9"))
                 .orElse(null);
 
-        book.setIdAuthor(author);
+        book.setAuthor(author);
 
         Book savedBook = bookRepository.save(book);
         System.out.println(savedBook);
@@ -54,7 +54,7 @@ class BookRepositoryTest {
         author.setBirthDate(LocalDate.of(20003, 10, 8));
         author.setNationality("American");
 
-        book.setIdAuthor(author);
+        book.setAuthor(author);
         Book savedBook = bookRepository.save(book);
         System.out.println(savedBook);
     }
@@ -75,7 +75,7 @@ class BookRepositoryTest {
     void findBookAndAuthorTest(){
         UUID id = UUID.fromString("3852138f-b889-4640-bd17-6755cce9c977");
         Book book = bookRepository.findById(id).orElse(null);
-        System.out.println("Author: " + book.getIdAuthor().getName());
+        System.out.println("Author: " + book.getAuthor().getName());
 
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface IBookRepository extends JpaRepository<Book, UUID> {
-    List<Book> findByIdAuthor(Author author);
+    List<Book> findByAuthor(Author author);
     List<Book> findByTitle(String title);
 
     // named parameters
@@ -28,5 +28,5 @@ public interface IBookRepository extends JpaRepository<Book, UUID> {
             """)
     List<Book> findByGenderPositional(@Param("order") String order, @Param("genderName") GenderBooks gender);
 
-    boolean existsByIdAuthor(Author author);
+    boolean existsByAuthor(Author author);
 }

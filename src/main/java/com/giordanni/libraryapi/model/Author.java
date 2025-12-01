@@ -41,7 +41,7 @@ public class Author {
     @Column(name = "id_user")
     private UUID idUser;
 
-    @OneToMany(mappedBy = "idAuthor") // mappedBy indica que a entidade Book possui a chave estrangeira (idAuthor) que referencia o Author. Não cria a coluna na tabela Author.
+    @OneToMany(mappedBy = "author") // mappedBy indica que a entidade Book possui a chave estrangeira (idAuthor) que referencia o Author. Não cria a coluna na tabela Author.
     private List<Book> books;
 
 }

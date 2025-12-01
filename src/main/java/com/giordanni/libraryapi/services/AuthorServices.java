@@ -78,6 +78,6 @@ public class AuthorServices {
     }
 
     private boolean existsBook(Author author){
-        return bookRepository.existsByIdAuthor(author);
+        return bookRepository.existsByAuthor(author);
     }
 }

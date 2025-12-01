@@ -100,7 +100,7 @@ public class AuthorRepositoryTest {
         book.setGender(GenderBooks.FICTION);
         book.setPrice(BigDecimal.valueOf(23.89));
         book.setPublicationDate(LocalDate.of(2025, 5, 10));
-        book.setIdAuthor(author);
+        book.setAuthor(author);
 
         Book book2 = new Book();
         book2.setTitle("Castelo interior");
@@ -108,7 +108,7 @@ public class AuthorRepositoryTest {
         book2.setGender(GenderBooks.BIOGRAPHY);
         book2.setPrice(BigDecimal.valueOf(23.89));
         book2.setPublicationDate(LocalDate.of(1891, 5, 10));
-        book2.setIdAuthor(author);
+        book2.setAuthor(author);
 
         author.setBooks(new ArrayList<>());
         author.getBooks().add(book);

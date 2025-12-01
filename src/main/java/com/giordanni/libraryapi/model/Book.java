@@ -47,7 +47,7 @@ public class Book {
 
     @ManyToOne //(cascade = CascadeType.ALL) // Indica que muitos livros podem ser escritos por um autor. Primeiro a entidade "muitos" (Book) referencia a entidade "um" (Author).
     @JoinColumn(name = "id_author")
-    private Author idAuthor;
+    private Author author;
 
     @Column(name = "id_user")
     private UUID idUser;
