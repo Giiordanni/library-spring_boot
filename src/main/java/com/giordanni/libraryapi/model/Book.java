@@ -21,7 +21,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String isbn;
 
     @Column(nullable = false, length = 20)
@@ -30,11 +30,11 @@ public class Book {
     @Column(nullable = false)
     private LocalDate publicationDate;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30)
     @Enumerated(EnumType.STRING)
     private GenderBooks gender;
 
-    @Column(nullable = false, precision = 18, scale = 2)
+    @Column(precision = 18, scale = 2)
     private BigDecimal price;
 
     @CreatedDate
@@ -48,5 +48,8 @@ public class Book {
     @ManyToOne //(cascade = CascadeType.ALL) // Indica que muitos livros podem ser escritos por um autor. Primeiro a entidade "muitos" (Book) referencia a entidade "um" (Author).
     @JoinColumn(name = "id_author")
     private Author idAuthor;
+
+    @Column(name = "id_user")
+    private UUID idUser;
 
 }
