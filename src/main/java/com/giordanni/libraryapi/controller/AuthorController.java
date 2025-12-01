@@ -1,5 +1,6 @@
 package com.giordanni.libraryapi.controller;
 
+import com.giordanni.libraryapi.controller.mappers.AuthorMapper;
 import com.giordanni.libraryapi.dtos.author.AuthorDTOs;
 import com.giordanni.libraryapi.dtos.author.AuthorResponseDTOs;
 import com.giordanni.libraryapi.dtos.errors.ResponseError;
@@ -10,7 +11,6 @@ import com.giordanni.libraryapi.services.AuthorServices;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -26,17 +26,18 @@ import java.util.stream.Collectors;
 public class AuthorController {
 
     private final AuthorServices authorServices;
+    private final AuthorMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTOs authorDto) {
+    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTOs dto) {
         try {
-            var entityAuthor = authorDto.mapperDtoToAuthor();
-            authorServices.createAuthor(entityAuthor);
+            Author author = mapper.toEntity(dto);
+            authorServices.createAuthor(author);
 
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{id}")
-                    .buildAndExpand(entityAuthor.getId())
+                    .buildAndExpand(author.getId())
                     .toUri();
 
             return ResponseEntity.created(location).build();
@@ -51,14 +52,12 @@ public class AuthorController {
     public ResponseEntity<AuthorResponseDTOs> getAuthorDetails(@PathVariable("id") UUID authorId){
         Optional<Author> authorOtional = authorServices.getByIdAuthor(authorId);
 
-        if(authorOtional.isPresent()){
-            Author author = authorOtional.get();
-            AuthorResponseDTOs dto = new AuthorResponseDTOs(author.getId(), author.getName(), author.getNationality(), author.getBirthDate());
-
-            return ResponseEntity.ok(dto);
-        }
-
-        return ResponseEntity.notFound().build();
+        return authorServices
+                .getByIdAuthor(authorId)
+                .map(author -> {
+                    AuthorResponseDTOs authorResponse = mapper.toDto(author);
+                    return ResponseEntity.ok(authorResponse);
+                }).orElseGet( () -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
@@ -68,11 +67,7 @@ public class AuthorController {
         List<Author> results = authorServices.searchAuthorsByExample(name, nationality);
         List<AuthorResponseDTOs> authorDto = results
                 .stream()
-                .map(au -> new AuthorResponseDTOs(
-                        au.getId(),
-                        au.getName(),
-                        au.getNationality(),
-                        au.getBirthDate()))
+                .map(mapper::toDto)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(authorDto);
