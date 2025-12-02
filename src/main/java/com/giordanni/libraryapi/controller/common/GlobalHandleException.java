@@ -1,6 +1,8 @@
 package com.giordanni.libraryapi.controller.common;
 
 import com.giordanni.libraryapi.dtos.errors.FieldErrorResponse;
+import com.giordanni.libraryapi.exceptions.OperationNotPermittedException;
+import com.giordanni.libraryapi.exceptions.RegisterDuplicateException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import com.giordanni.libraryapi.dtos.errors.ResponseError;
@@ -24,5 +26,23 @@ public class GlobalHandleException {
                 .map(fe -> new FieldErrorResponse(fe.getField(), fe.getDefaultMessage()))
                 .collect(Collectors.toList());
         return new ResponseError(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation Error", listErrors );
+    }
+
+    @ExceptionHandler(RegisterDuplicateException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseError handleRegisterDuplicateException(RegisterDuplicateException e){
+        return ResponseError.conflictResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseError handleOperationNotPermittedException(OperationNotPermittedException e){
+        return ResponseError.standardResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseError handleErrors(RuntimeException e){
+        return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error: " + e.getMessage(), List.of());
     }
 }
