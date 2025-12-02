@@ -2,7 +2,7 @@ package com.giordanni.libraryapi.dtos.books;
 
 import com.giordanni.libraryapi.dtos.author.AuthorResponseDTOs;
 import com.giordanni.libraryapi.model.GenderBooks;
-import org.hibernate.validator.constraints.UUID;
+import java.util.UUID;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
