@@ -1,6 +1,6 @@
 package com.giordanni.libraryapi.services;
 
-import com.giordanni.libraryapi.exceptions.OperationNorPermittedException;
+import com.giordanni.libraryapi.exceptions.OperationNotPermittedException;
 import com.giordanni.libraryapi.model.Author;
 import com.giordanni.libraryapi.repository.IAuthorRepository;
 import com.giordanni.libraryapi.repository.IBookRepository;
@@ -33,7 +33,7 @@ public class AuthorServices {
     }
     public void deleteAuthor(Author author) {
         if(existsBook(author)){
-            throw new OperationNorPermittedException("Cannot delete author with associated books.");
+            throw new OperationNotPermittedException("Cannot delete author with associated books.");
         }
         authorRepository.delete(author);
     }
