@@ -1,6 +1,7 @@
 package com.giordanni.libraryapi.services;
 
 import com.giordanni.libraryapi.dtos.books.RegistrationBookDTO;
+import com.giordanni.libraryapi.model.Book;
 import com.giordanni.libraryapi.repository.IBookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,8 +12,7 @@ public class BookService {
 
     private final IBookRepository bookRepository;
 
-    public RegistrationBookDTO createBook(RegistrationBookDTO dto){
-        // Lógica para criar um livro
-        return dto;
+    public Book createBook(Book dto){
+        return bookRepository.save(dto);
     }
 }
