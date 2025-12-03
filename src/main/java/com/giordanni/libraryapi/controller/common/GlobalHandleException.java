@@ -1,6 +1,7 @@
 package com.giordanni.libraryapi.controller.common;
 
 import com.giordanni.libraryapi.dtos.errors.FieldErrorResponse;
+import com.giordanni.libraryapi.exceptions.InvalidFieldException;
 import com.giordanni.libraryapi.exceptions.OperationNotPermittedException;
 import com.giordanni.libraryapi.exceptions.RegisterDuplicateException;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,12 @@ public class GlobalHandleException {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseError handleOperationNotPermittedException(OperationNotPermittedException e){
         return ResponseError.standardResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidFieldException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ResponseError handleInvalidFieldException(InvalidFieldException e) {
+        return new ResponseError(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation Error", List.of(new FieldErrorResponse(e.getField(), e.getMessage())));
     }
 
     @ExceptionHandler(Exception.class)
