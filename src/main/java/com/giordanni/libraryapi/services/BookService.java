@@ -59,4 +59,11 @@ public class BookService {
         return bookRepository.findAll(specs);
 
     }
+    public void updateBook(Book book){
+        if(book.getId() == null){
+            throw new IllegalArgumentException("Book ID cannot be null for update operation.");
+        }
+
+        bookRepository.save(book);
+    }
 }
