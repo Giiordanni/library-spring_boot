@@ -1,10 +1,10 @@
 package com.giordanni.libraryapi.services;
 
-import com.giordanni.libraryapi.dtos.books.RegistrationBookDTO;
 import com.giordanni.libraryapi.model.Book;
 import com.giordanni.libraryapi.model.GenderBooks;
 import com.giordanni.libraryapi.repository.IBookRepository;
 import com.giordanni.libraryapi.repository.specs.BookSpecs;
+import com.giordanni.libraryapi.validators.BookValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -18,9 +18,11 @@ import java.util.UUID;
 public class BookService {
 
     private final IBookRepository bookRepository;
+    private final BookValidator bookValidator;
 
-    public Book createBook(Book dto){
-        return bookRepository.save(dto);
+    public Book createBook(Book book){
+        bookValidator.validate(book);
+        return bookRepository.save(book);
     }
 
     public Optional<Book> getBookById(UUID id){
@@ -64,6 +66,7 @@ public class BookService {
             throw new IllegalArgumentException("Book ID cannot be null for update operation.");
         }
 
+        bookValidator.validate(book);
         bookRepository.save(book);
     }
 }

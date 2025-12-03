@@ -52,7 +52,7 @@ public class BookController implements GenericController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResultSearchBookDTO>> searchBooksFilter(@RequestParam(value = "isdn", required = false) String isbn,
+    public ResponseEntity<List<ResultSearchBookDTO>> searchBooksFilter(@RequestParam(value = "isbn", required = false) String isbn,
                                                                        @RequestParam(value = "title", required = false) String title,
                                                                        @RequestParam(value = "name-author", required = false) String nameAuthor,
                                                                        @RequestParam(value = "gender", required = false) GenderBooks gender,

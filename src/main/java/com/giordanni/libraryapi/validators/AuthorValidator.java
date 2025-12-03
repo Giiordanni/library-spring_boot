@@ -3,7 +3,6 @@ package com.giordanni.libraryapi.validators;
 import com.giordanni.libraryapi.exceptions.RegisterDuplicateException;
 import com.giordanni.libraryapi.model.Author;
 import com.giordanni.libraryapi.repository.IAuthorRepository;
-import com.giordanni.libraryapi.services.AuthorServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
