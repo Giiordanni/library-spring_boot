@@ -4,14 +4,16 @@ import com.giordanni.libraryapi.controller.mappers.BookMapper;
 import com.giordanni.libraryapi.dtos.books.RegistrationBookDTO;
 import com.giordanni.libraryapi.dtos.books.ResultSearchBookDTO;
 import com.giordanni.libraryapi.model.Book;
+import com.giordanni.libraryapi.model.GenderBooks;
 import com.giordanni.libraryapi.services.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/books")
@@ -47,5 +49,21 @@ public class BookController implements GenericController {
                     service.deleteBook(book);
                     return ResponseEntity.noContent().build();
                 }).orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ResultSearchBookDTO>> searchBooksFilter(@RequestParam(value = "isdn", required = false) String isbn,
+                                                                       @RequestParam(value = "title", required = false) String title,
+                                                                       @RequestParam(value = "name-author", required = false) String nameAuthor,
+                                                                       @RequestParam(value = "gender", required = false) GenderBooks gender,
+                                                                       @RequestParam(value = "publication-year", required = false) Integer publicationYear) {
+
+        var result = service.searchBooksByFilter(isbn, title, nameAuthor, gender, publicationYear);
+        var list = result
+                .stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(list);
     }
 }
