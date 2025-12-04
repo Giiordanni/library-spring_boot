@@ -8,6 +8,7 @@ import com.giordanni.libraryapi.model.GenderBooks;
 import com.giordanni.libraryapi.services.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,19 +53,19 @@ public class BookController implements GenericController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResultSearchBookDTO>> searchBooksFilter(@RequestParam(value = "isbn", required = false) String isbn,
+    public ResponseEntity<Page<ResultSearchBookDTO>> searchBooksFilter(@RequestParam(value = "isbn", required = false) String isbn,
                                                                        @RequestParam(value = "title", required = false) String title,
                                                                        @RequestParam(value = "name-author", required = false) String nameAuthor,
                                                                        @RequestParam(value = "gender", required = false) GenderBooks gender,
-                                                                       @RequestParam(value = "publication-year", required = false) Integer publicationYear) {
+                                                                       @RequestParam(value = "publication-year", required = false) Integer publicationYear,
+                                                                       @RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                                       @RequestParam(value = "size-page", defaultValue = "10") Integer size) {
 
-        var result = service.searchBooksByFilter(isbn, title, nameAuthor, gender, publicationYear);
-        var list = result
-                .stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
+        Page<Book> pageResult = service.searchBooksByFilter(isbn, title, nameAuthor, gender, publicationYear, page, size);
 
-        return ResponseEntity.ok(list);
+        Page<ResultSearchBookDTO> result = pageResult.map(mapper::toDto);
+
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping("/{id}")
