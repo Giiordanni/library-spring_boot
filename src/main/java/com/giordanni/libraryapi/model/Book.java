@@ -34,7 +34,7 @@ public class Book {
     @Enumerated(EnumType.STRING)
     private GenderBooks gender;
 
-    @Column(precision = 18, scale = 2)
+    @Column(precision = 18, scale = 2, nullable = true)
     private BigDecimal price;
 
     @CreatedDate
