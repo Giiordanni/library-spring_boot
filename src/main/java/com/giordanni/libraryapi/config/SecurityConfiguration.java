@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,21 +20,34 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF desabilitado porque a API é stateless e usa autenticação via JWT; não dependemos de cookies, então não há risco de ataques CSRF.
+
                 .formLogin(configurer -> {
                     configurer.loginPage("/login").permitAll(); // permitir acesso à página de login personalizada para todos os usuários
+
                 }) // forma básica de login com formulário padrão
+
                 .httpBasic(Customizer.withDefaults()) // autenticação HTTP básica
+
                 .authorizeHttpRequests(authorize -> {
+//                    // Swagger liberado
+//                    authorize.requestMatchers(
+//                            "/v3/api-docs/**",
+//                            "/swagger-ui/**",
+//                            "/swagger-ui.html"
+//                    ).permitAll();
+
                     authorize.requestMatchers( "/login").permitAll(); // permitir acesso à página de login para todos os usuários
                     authorize.requestMatchers(HttpMethod.POST,"/users/**").permitAll(); // permitir acesso aos endpoints de usuários para todos
-                    authorize.requestMatchers("/authors/**").hasAnyRole( "ADMIN"); // apenas usuários com papel ADMIN podem acessar endpoints de autores
-                    authorize.requestMatchers("/books/**").hasAnyRole("USER", "ADMIN"); // usuários com papel USER ou ADMIN podem acessar endpoints de livros
+
+//                    authorize.requestMatchers("/authors/**").hasAnyRole( "ADMIN"); // apenas usuários com papel ADMIN podem acessar endpoints de autores
+//                    authorize.requestMatchers("/books/**").hasAnyRole("USER", "ADMIN"); // usuários com papel USER ou ADMIN podem acessar endpoints de livros
 
 //                    authorize.requestMatchers(HttpMethod.POST, "/authors/**").hasRole("ADMIN");
 //                    authorize.requestMatchers(HttpMethod.PUT, "/authors/**").hasRole("ADMIN");

@@ -5,6 +5,7 @@ import com.giordanni.libraryapi.exceptions.InvalidFieldException;
 import com.giordanni.libraryapi.exceptions.OperationNotPermittedException;
 import com.giordanni.libraryapi.exceptions.RegisterDuplicateException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import com.giordanni.libraryapi.dtos.errors.ResponseError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,6 +46,12 @@ public class GlobalHandleException {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ResponseError handleInvalidFieldException(InvalidFieldException e) {
         return new ResponseError(HttpStatus.UNPROCESSABLE_ENTITY.value(), "Validation Error", List.of(new FieldErrorResponse(e.getField(), e.getMessage())));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseError handlerAccessDeniedException(AccessDeniedException e){
+        return new ResponseError(HttpStatus.FORBIDDEN.value(), "Access Denied." , List.of());
     }
 
     @ExceptionHandler(Exception.class)

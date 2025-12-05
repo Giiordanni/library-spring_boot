@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class BookController implements GenericController {
     private final BookMapper mapper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Object> createBook(@RequestBody @Valid RegistrationBookDTO dto) {
         Book bookToCreate = mapper.toEntity(dto);
 
@@ -35,6 +37,7 @@ public class BookController implements GenericController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<ResultSearchBookDTO> getDetails(@PathVariable("id") String id) {
         return service.getBookById(UUID.fromString(id))
                 .map(book -> {
@@ -44,6 +47,7 @@ public class BookController implements GenericController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Object> deleteBook(@PathVariable("id") String id) {
         return service.getBookById(UUID.fromString(id))
                 .map(book -> {
@@ -53,6 +57,7 @@ public class BookController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Page<ResultSearchBookDTO>> searchBooksFilter(@RequestParam(value = "isbn", required = false) String isbn,
                                                                        @RequestParam(value = "title", required = false) String title,
                                                                        @RequestParam(value = "name-author", required = false) String nameAuthor,
@@ -69,6 +74,7 @@ public class BookController implements GenericController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<Object> updateBook(@PathVariable("id") String id, @RequestBody RegistrationBookDTO dto) {
        return  service.getBookById(UUID.fromString(id))
                 .map(book -> {

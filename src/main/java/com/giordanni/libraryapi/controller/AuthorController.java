@@ -11,6 +11,7 @@ import com.giordanni.libraryapi.services.AuthorServices;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -28,6 +29,7 @@ public class AuthorController implements GenericController {
     private final AuthorMapper mapper;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTOs dto) {
         Author author = mapper.toEntity(dto);
         authorServices.createAuthor(author);
@@ -40,6 +42,7 @@ public class AuthorController implements GenericController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<AuthorResponseDTOs> getAuthorDetails(@PathVariable("id") UUID authorId) {
         Optional<Author> authorOtional = authorServices.getByIdAuthor(authorId);
 
@@ -52,6 +55,7 @@ public class AuthorController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
     public ResponseEntity<List<AuthorResponseDTOs>> searchAuthorsUsingFilters(@RequestParam(value = "name", required = false) String name,
                                                                               @RequestParam(value = "nationality", required = false) String nationality) {
 
@@ -65,6 +69,7 @@ public class AuthorController implements GenericController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deleteAuthor(@PathVariable("id") UUID authorId) {
 
         Optional<Author> authorOtional = authorServices.getByIdAuthor(authorId);
@@ -75,6 +80,7 @@ public class AuthorController implements GenericController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> updateAuthor(@PathVariable("id") UUID id, @RequestBody @Valid AuthorDTOs dtOs) {
 
         Optional<Author> authorOtional = authorServices.getByIdAuthor(id);
