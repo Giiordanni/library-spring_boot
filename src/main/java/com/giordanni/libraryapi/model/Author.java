@@ -38,8 +38,9 @@ public class Author {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "id_user")
-    private UUID idUser;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 
     @OneToMany(mappedBy = "author") // mappedBy indica que a entidade Book possui a chave estrangeira (idAuthor) que referencia o Author. Não cria a coluna na tabela Author.
     private List<Book> books;

@@ -2,8 +2,10 @@ package com.giordanni.libraryapi.services;
 
 import com.giordanni.libraryapi.model.Book;
 import com.giordanni.libraryapi.model.GenderBooks;
+import com.giordanni.libraryapi.model.User;
 import com.giordanni.libraryapi.repository.IBookRepository;
 import com.giordanni.libraryapi.repository.specs.BookSpecs;
+import com.giordanni.libraryapi.seucurity.SecurityService;
 import com.giordanni.libraryapi.validators.BookValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,9 +24,14 @@ public class BookService {
 
     private final IBookRepository bookRepository;
     private final BookValidator bookValidator;
+    private final SecurityService securityService;
 
     public Book createBook(Book book){
         bookValidator.validate(book);
+
+        User user = securityService.getUserLogin();
+        book.setUser(user);
+
         return bookRepository.save(book);
     }
 

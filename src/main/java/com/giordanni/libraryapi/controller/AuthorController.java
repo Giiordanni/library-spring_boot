@@ -3,15 +3,17 @@ package com.giordanni.libraryapi.controller;
 import com.giordanni.libraryapi.controller.mappers.AuthorMapper;
 import com.giordanni.libraryapi.dtos.author.AuthorDTOs;
 import com.giordanni.libraryapi.dtos.author.AuthorResponseDTOs;
-import com.giordanni.libraryapi.dtos.errors.ResponseError;
-import com.giordanni.libraryapi.exceptions.OperationNotPermittedException;
-import com.giordanni.libraryapi.exceptions.RegisterDuplicateException;
 import com.giordanni.libraryapi.model.Author;
+import com.giordanni.libraryapi.model.User;
 import com.giordanni.libraryapi.services.AuthorServices;
+import com.giordanni.libraryapi.services.UserService;
+import com.giordanni.libraryapi.seucurity.SecurityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -26,12 +28,19 @@ import java.util.stream.Collectors;
 public class AuthorController implements GenericController {
 
     private final AuthorServices authorServices;
+    // private final UserService userService;
     private final AuthorMapper mapper;
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTOs dto) {
+    public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTOs dto) { //  Authentication auth
+
+        // subistitui tudo dentro do authorservices
+        // UserDetails userLogin = (UserDetails) auth.getPrincipal();
+       // User user = userService.getByLogin(userLogin.getUsername());
+
         Author author = mapper.toEntity(dto);
+        // author.setIdUser(user.getId());
         authorServices.createAuthor(author);
 
         URI location = generateHeaderLocation(author.getId());

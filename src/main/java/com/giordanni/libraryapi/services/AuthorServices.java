@@ -2,8 +2,10 @@ package com.giordanni.libraryapi.services;
 
 import com.giordanni.libraryapi.exceptions.OperationNotPermittedException;
 import com.giordanni.libraryapi.model.Author;
+import com.giordanni.libraryapi.model.User;
 import com.giordanni.libraryapi.repository.IAuthorRepository;
 import com.giordanni.libraryapi.repository.IBookRepository;
+import com.giordanni.libraryapi.seucurity.SecurityService;
 import com.giordanni.libraryapi.validators.AuthorValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
@@ -21,10 +23,13 @@ public class AuthorServices {
     private final IAuthorRepository authorRepository;
     private final IBookRepository bookRepository;
     public final AuthorValidator authorValidator;
+    private final SecurityService securityService;
+
 
     public Author createAuthor(Author author) {
         authorValidator.validate(author);
-
+        User user = securityService.getUserLogin();
+        author.setUser(user);
         return authorRepository.save(author);
     }
 

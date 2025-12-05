@@ -49,7 +49,8 @@ public class Book {
     @JoinColumn(name = "id_author")
     private Author author;
 
-    @Column(name = "id_user")
-    private UUID idUser;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
 
 }
