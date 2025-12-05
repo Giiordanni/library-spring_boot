@@ -28,7 +28,8 @@ public class SecurityConfiguration {
                 }) // forma básica de login com formulário padrão
                 .httpBasic(Customizer.withDefaults()) // autenticação HTTP básica
                 .authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/login").permitAll(); // permitir acesso à página de login para todos os usuários
+                    authorize.requestMatchers( "/login").permitAll(); // permitir acesso à página de login para todos os usuários
+                    authorize.requestMatchers(HttpMethod.POST,"/users/**").permitAll(); // permitir acesso aos endpoints de usuários para todos
                     authorize.requestMatchers("/authors/**").hasAnyRole( "ADMIN"); // apenas usuários com papel ADMIN podem acessar endpoints de autores
                     authorize.requestMatchers("/books/**").hasAnyRole("USER", "ADMIN"); // usuários com papel USER ou ADMIN podem acessar endpoints de livros
 
