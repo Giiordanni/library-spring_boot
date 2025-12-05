@@ -1,5 +1,7 @@
 package com.giordanni.libraryapi.config;
 
+import com.giordanni.libraryapi.services.UserService;
+import com.giordanni.libraryapi.seucurity.CustomDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -51,19 +53,21 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder){
-        UserDetails user1 = User.builder()
-                .username("user")
-                .password(encoder.encode("senha123"))
-                .roles("USER")
-                .build();
+    public UserDetailsService userDetailsService(UserService userService){ // PasswordEncoder encoder
+//        UserDetails user1 = User.builder()
+//                .username("user")
+//                .password(encoder.encode("senha123"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails user2 = User.builder()
+//                .username("admin")
+//                .password(encoder.encode("senha456"))
+//                .roles("ADMIN")
+//                .build();
 
-        UserDetails user2 = User.builder()
-                .username("admin")
-                .password(encoder.encode("senha456"))
-                .roles("ADMIN")
-                .build();
+//        return new InMemoryUserDetailsManager(user1, user2);
 
-        return new InMemoryUserDetailsManager(user1, user2);
+        return new CustomDetailsService(userService);
     }
 }
