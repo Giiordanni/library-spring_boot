@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -68,7 +69,7 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder(10);
     }
 
-    // @Bean
+    // @Bean // comentei para usar o CustomAuthenticationProvider
     public UserDetailsService userDetailsService(UserService userService){ // PasswordEncoder encoder
 //        UserDetails user1 = User.builder()
 //                .username("user")
@@ -86,4 +87,10 @@ public class SecurityConfiguration {
 
         return new CustomDetailsService(userService);
     }
+
+    @Bean
+    public GrantedAuthorityDefaults grantedAuthorityDefaults(){
+        return new GrantedAuthorityDefaults(""); // remove o prefixo ROLE_ padrão do Spring Security
+    }
+
 }
