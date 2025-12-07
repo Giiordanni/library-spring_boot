@@ -28,10 +28,11 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF desabilitado porque a API é stateless e usa autenticação via JWT; não dependemos de cookies, então não há risco de ataques CSRF.
 
-                .formLogin(configurer -> {
-                    configurer.loginPage("/login").permitAll(); // permitir acesso à página de login personalizada para todos os usuários
-
-                }) // forma básica de login com formulário padrão
+//                .formLogin(configurer -> {
+//                    configurer.loginPage("/login").permitAll(); // permitir acesso à página de login personalizada para todos os usuários
+//
+//                }) // forma básica de login com formulário padrão
+                .formLogin(Customizer.withDefaults()) // forma padrao de login com o google
 
                 .httpBasic(Customizer.withDefaults()) // autenticação HTTP básica
 
@@ -58,6 +59,7 @@ public class SecurityConfiguration {
                     authorize.anyRequest().authenticated(); // todas as requisições exigem autenticação
                     // nenhuma regra de requisição pode ser feita depois da anyRequest()
                 })
+                .oauth2Login(Customizer.withDefaults())
                 .build();
     }
 
