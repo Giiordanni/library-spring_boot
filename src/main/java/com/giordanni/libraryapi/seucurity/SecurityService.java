@@ -22,11 +22,9 @@ public class SecurityService {
 //
 //        return userService.getByLogin(login);
 
-
-        if(authentication instanceof CustomAuthentication customAuthentication){
-            return customAuthentication.getUser();
-        }
+        if (authentication instanceof CustomAuthentication customAuth) return customAuth.getUser();
 
         return null;
+
     }
 }
