@@ -2,6 +2,7 @@ package com.giordanni.libraryapi.config;
 
 import com.giordanni.libraryapi.services.UserService;
 import com.giordanni.libraryapi.seucurity.CustomDetailsService;
+import com.giordanni.libraryapi.seucurity.SocialLoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,7 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, SocialLoginSuccessHandler successHandler) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF desabilitado porque a API é stateless e usa autenticação via JWT; não dependemos de cookies, então não há risco de ataques CSRF.
 
@@ -60,7 +61,10 @@ public class SecurityConfiguration {
                     authorize.anyRequest().authenticated(); // todas as requisições exigem autenticação
                     // nenhuma regra de requisição pode ser feita depois da anyRequest()
                 })
-                .oauth2Login(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> {
+                    oauth2.successHandler(successHandler);
+                })
+                //.oauth2Login(Customizer.withDefaults())
                 .build();
     }
 
