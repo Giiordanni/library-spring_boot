@@ -54,7 +54,7 @@ public class GlobalHandleException {
         return new ResponseError(HttpStatus.FORBIDDEN.value(), "Access Denied." , List.of());
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseError handleErrors(RuntimeException e){
         return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error: " + e.getMessage(), List.of());
