@@ -23,6 +23,9 @@ public class User {
     @Column(length = 300, nullable = false)
     private String password;
 
+    @Column(length = 150, nullable = false)
+    private String email;
+
 
     // no banco de dados esse campo roles será guardado como array de strings
     // o jpa não saberá traduzir uma lista de strings para um array no banco de dados

@@ -3,6 +3,7 @@ package com.giordanni.libraryapi.controller;
 import com.giordanni.libraryapi.controller.mappers.UserMapper;
 import com.giordanni.libraryapi.dtos.user.UserDto;
 import com.giordanni.libraryapi.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody UserDto dto){
+    public void createUser(@RequestBody @Valid UserDto dto){
         var user = mapper.toEntity(dto);
         userService.saveUser(user);
     }
