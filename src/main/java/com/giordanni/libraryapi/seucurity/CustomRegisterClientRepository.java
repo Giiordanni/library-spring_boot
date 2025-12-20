@@ -6,6 +6,8 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -13,6 +15,9 @@ import org.springframework.stereotype.Component;
 public class CustomRegisterClientRepository implements RegisteredClientRepository {
 
     private final ClientServices clientServices;
+    private final TokenSettings tokenSettings;
+    private final ClientSettings clientSettings;
+
 
     @Override
     public void save(RegisteredClient registeredClient) {}
@@ -36,7 +41,8 @@ public class CustomRegisterClientRepository implements RegisteredClientRepositor
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                // .tokenSettings() // posso fazer configurações de tokens aqui
+                .tokenSettings(tokenSettings) // posso fazer configurações de tokens aqui
+                .clientSettings(clientSettings)
                 .build();
     }
 }
