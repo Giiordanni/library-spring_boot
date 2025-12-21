@@ -70,29 +70,29 @@ public class SecurityConfiguration {
                 .build();
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder(10);
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder(){
+//        return new BCryptPasswordEncoder(10);
+//    }
 
     // @Bean // comentei para usar o CustomAuthenticationProvider
-    public UserDetailsService userDetailsService(UserService userService){ // PasswordEncoder encoder
-//        UserDetails user1 = User.builder()
-//                .username("user")
-//                .password(encoder.encode("senha123"))
-//                .roles("USER")
-//                .build();
+//    public UserDetailsService userDetailsService(UserService userService){ // PasswordEncoder encoder
+////        UserDetails user1 = User.builder()
+////                .username("user")
+////                .password(encoder.encode("senha123"))
+////                .roles("USER")
+////                .build();
+////
+////        UserDetails user2 = User.builder()
+////                .username("admin")
+////                .password(encoder.encode("senha456"))
+////                .roles("ADMIN")
+////                .build();
 //
-//        UserDetails user2 = User.builder()
-//                .username("admin")
-//                .password(encoder.encode("senha456"))
-//                .roles("ADMIN")
-//                .build();
-
-//        return new InMemoryUserDetailsManager(user1, user2);
-
-        return new CustomDetailsService(userService);
-    }
+////        return new InMemoryUserDetailsManager(user1, user2);
+//
+//        return new CustomDetailsService(userService);
+//    }
 
     @Bean
     public GrantedAuthorityDefaults grantedAuthorityDefaults(){
