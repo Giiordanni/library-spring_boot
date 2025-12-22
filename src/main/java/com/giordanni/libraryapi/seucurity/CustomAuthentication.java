@@ -3,7 +3,6 @@ package com.giordanni.libraryapi.seucurity;
 import com.giordanni.libraryapi.model.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,17 +27,17 @@ public class CustomAuthentication implements Authentication {
     }
 
     @Override
-    public @Nullable Object getCredentials() {
+    public Object getCredentials() {
         return null;
     }
 
     @Override
-    public @Nullable Object getDetails() {
+    public Object getDetails() {
         return user;
     }
 
     @Override
-    public @Nullable Object getPrincipal() {
+    public Object getPrincipal() {
         return user;
     }
 
