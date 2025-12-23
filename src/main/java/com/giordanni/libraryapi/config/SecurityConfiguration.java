@@ -30,7 +30,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, SocialLoginSuccessHandler successHandler) throws Exception {
         return http
-                .csrf(AbstractHttpConfigurer::disable) // CSRF desabilitado porque a API é stateless e usa autenticação via JWT; não dependemos de cookies, então não há risco de ataques CSRF.
+                .csrf(AbstractHttpConfigurer::disable) // CSRF desabilitado porque a API é stateless e usa autenticação via JWT; não dependemos de cookies, então não há risco de ataques CSRF. Se trabalhar com front end, preciso habilitar o CSRF.
 
                 .formLogin(configurer -> {
                     configurer.loginPage("/login").permitAll(); // permitir acesso à página de login personalizada para todos os usuários

@@ -12,7 +12,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        registry.addViewController("/login").setViewName("login"); // aqui eu digo para quando acessar a /login chame a view login.html
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE); // para garantir que essa configuração tenha alta prioridade
     }
 }

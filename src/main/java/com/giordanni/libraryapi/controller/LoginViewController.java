@@ -11,7 +11,7 @@ public class LoginViewController {
 
     @GetMapping("/login")
     public String pageLogin(){
-        return "login";
+        return "login"; // retorna o nome da view (login.html) para ser renderizada
     }
 
     @GetMapping("/home")
