@@ -11,6 +11,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.userdetails.User;
@@ -77,6 +78,19 @@ public class SecurityConfiguration {
                 //.oauth2Login(Customizer.withDefaults())
                 .addFilterAfter(jwtCustomAuthenticationFilter, BearerTokenAuthenticationFilter.class)
                 .build();
+    }
+
+    // fazer com que o swagger não passe pela autenticação
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer(){
+        return web ->  web.ignoring().requestMatchers(
+             "/v2/api-docs/**", // libera o acesso ao api docs
+                "/v3/api-docs/**", // libera o acesso ao api docs
+                "/swagger-resources/**", // libera o acesso aos recursos do swagger
+                "/swagger-ui.html", // libera o acesso à página do swagger
+                "/swagger-ui/**", // libera o acesso ao swagger ui
+                "/webjars/**" // contem a interface do swagger
+            );
     }
 
     // @Bean // comentei para usar o CustomAuthenticationProvider
