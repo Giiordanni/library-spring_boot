@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                 }) // forma básica de login com formulário padrão
                 // .formLogin(Customizer.withDefaults()) // forma padrao de login com o google
 
-                .httpBasic(Customizer.withDefaults()) // autenticação HTTP básica
+                // .httpBasic(Customizer.withDefaults()) // autenticação HTTP básica
 
                 .authorizeHttpRequests(authorize -> {
 //                    // Swagger liberado
