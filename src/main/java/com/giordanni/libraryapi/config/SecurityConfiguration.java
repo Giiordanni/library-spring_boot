@@ -2,6 +2,7 @@ package com.giordanni.libraryapi.config;
 
 import com.giordanni.libraryapi.services.UserService;
 import com.giordanni.libraryapi.seucurity.CustomDetailsService;
+import com.giordanni.libraryapi.seucurity.JWTCustomAuthenticationFilter;
 import com.giordanni.libraryapi.seucurity.SocialLoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -28,7 +30,10 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, SocialLoginSuccessHandler successHandler) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   SocialLoginSuccessHandler successHandler,
+                                                   JWTCustomAuthenticationFilter jwtCustomAuthenticationFilter) throws Exception {
+
         return http
                 .csrf(AbstractHttpConfigurer::disable) // CSRF desabilitado porque a API é stateless e usa autenticação via JWT; não dependemos de cookies, então não há risco de ataques CSRF. Se trabalhar com front end, preciso habilitar o CSRF.
 
@@ -70,6 +75,7 @@ public class SecurityConfiguration {
                 })
                 .oauth2ResourceServer(oauth2Rs -> oauth2Rs.jwt(Customizer.withDefaults()))
                 //.oauth2Login(Customizer.withDefaults())
+                .addFilterAfter(jwtCustomAuthenticationFilter, BearerTokenAuthenticationFilter.class)
                 .build();
     }
 
