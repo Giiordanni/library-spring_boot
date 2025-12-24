@@ -6,6 +6,10 @@ import com.giordanni.libraryapi.dtos.books.ResultSearchBookDTO;
 import com.giordanni.libraryapi.model.Book;
 import com.giordanni.libraryapi.model.GenderBooks;
 import com.giordanni.libraryapi.services.BookService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/books")
 @RequiredArgsConstructor
+@Tag(name = "Books") // para o swagger
 public class BookController implements GenericController {
 
     private final BookService service;
@@ -27,6 +32,12 @@ public class BookController implements GenericController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @Operation(summary = "Create", description = "Endpoint to create a new book") // para o swagger descrever o endpoint
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Book created successfully"),
+            @ApiResponse(responseCode = "402", description = "Invalid request data"),
+            @ApiResponse(responseCode = "409", description = "Book already exists")
+    })
     public ResponseEntity<Object> createBook(@RequestBody @Valid RegistrationBookDTO dto) {
         Book bookToCreate = mapper.toEntity(dto);
 
@@ -38,6 +49,11 @@ public class BookController implements GenericController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @Operation(summary = "Get Books Details", description = "Endpoint to get book details by ID") // para o swagger descrever o endpoint
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Books details retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Books not found")
+    })
     public ResponseEntity<ResultSearchBookDTO> getDetails(@PathVariable("id") String id) {
         return service.getBookById(UUID.fromString(id))
                 .map(book -> {
@@ -48,6 +64,11 @@ public class BookController implements GenericController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @Operation(summary = "Delete", description = "Endpoint to delete book") // para o swagger descrever o endpoint
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Book deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Book not found")
+    })
     public ResponseEntity<Object> deleteBook(@PathVariable("id") String id) {
         return service.getBookById(UUID.fromString(id))
                 .map(book -> {
@@ -58,6 +79,11 @@ public class BookController implements GenericController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @Operation(summary = "Get by filters", description = "Endpoint to find books with filters") // para o swagger descrever o endpoint
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Authors retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Authors not found")
+    })
     public ResponseEntity<Page<ResultSearchBookDTO>> searchBooksFilter(@RequestParam(value = "isbn", required = false) String isbn,
                                                                        @RequestParam(value = "title", required = false) String title,
                                                                        @RequestParam(value = "name-author", required = false) String nameAuthor,
@@ -75,6 +101,12 @@ public class BookController implements GenericController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'OPERATOR')")
+    @Operation(summary = "Update", description = "Endpoint to update a book") // para o swagger descrever o endpoint
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Book updated successfully"),
+            @ApiResponse(responseCode = "402", description = "Invalid request data"),
+            @ApiResponse(responseCode = "409", description = "Book already exists")
+    })
     public ResponseEntity<Object> updateBook(@PathVariable("id") String id, @RequestBody RegistrationBookDTO dto) {
        return  service.getBookById(UUID.fromString(id))
                 .map(book -> {
