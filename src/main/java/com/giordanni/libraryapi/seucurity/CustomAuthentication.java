@@ -17,7 +17,7 @@ public class CustomAuthentication implements Authentication {
     private final User user;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return this.user
                 .getRoles()
                 .stream()
