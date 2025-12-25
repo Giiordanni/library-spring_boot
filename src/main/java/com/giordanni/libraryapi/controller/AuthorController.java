@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/authors")
 @RequiredArgsConstructor
 @Tag(name = "Authors") // para o swagger
+@Slf4j // para logs
 public class AuthorController implements GenericController {
 
     private final AuthorServices authorServices;
@@ -87,6 +89,12 @@ public class AuthorController implements GenericController {
     })
     public ResponseEntity<List<AuthorResponseDTOs>> searchAuthorsUsingFilters(@RequestParam(value = "name", required = false) String name,
                                                                               @RequestParam(value = "nationality", required = false) String nationality) {
+
+        log.trace("Pesquisa de autores");
+        log.debug("Pesquisa de autores");
+        log.info("Pesquisa de autores");
+        log.warn("Pesquisa de autores");
+        log.error("Pesquisa de autores");
 
         List<Author> results = authorServices.searchAuthorsByExample(name, nationality);
         List<AuthorResponseDTOs> authorDto = results
