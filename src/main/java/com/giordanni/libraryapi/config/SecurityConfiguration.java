@@ -89,7 +89,8 @@ public class SecurityConfiguration {
                 "/swagger-resources/**", // libera o acesso aos recursos do swagger
                 "/swagger-ui.html", // libera o acesso à página do swagger
                 "/swagger-ui/**", // libera o acesso ao swagger ui
-                "/webjars/**" // contem a interface do swagger
+                "/webjars/**", // contem a interface do swagger
+                "/actuator/**" // libera o acesso ao actuator
             );
     }
 
