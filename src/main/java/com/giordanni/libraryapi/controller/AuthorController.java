@@ -48,6 +48,7 @@ public class AuthorController implements GenericController {
     })
     public ResponseEntity<Object> createAuthor(@RequestBody @Valid AuthorDTOs dto) { //  Authentication auth
 
+        log.info("Caming request to create author: {}", dto.name());
         // subistitui tudo dentro do authorservices
         // UserDetails userLogin = (UserDetails) auth.getPrincipal();
        // User user = userService.getByLogin(userLogin.getUsername());
@@ -90,11 +91,6 @@ public class AuthorController implements GenericController {
     public ResponseEntity<List<AuthorResponseDTOs>> searchAuthorsUsingFilters(@RequestParam(value = "name", required = false) String name,
                                                                               @RequestParam(value = "nationality", required = false) String nationality) {
 
-        log.trace("Pesquisa de autores");
-        log.debug("Pesquisa de autores");
-        log.info("Pesquisa de autores");
-        log.warn("Pesquisa de autores");
-        log.error("Pesquisa de autores");
 
         List<Author> results = authorServices.searchAuthorsByExample(name, nationality);
         List<AuthorResponseDTOs> authorDto = results
@@ -115,6 +111,7 @@ public class AuthorController implements GenericController {
     })
     public ResponseEntity<Object> deleteAuthor(@PathVariable("id") UUID authorId) {
 
+        log.info("Caming request to delete author: {}", authorId);
         Optional<Author> authorOtional = authorServices.getByIdAuthor(authorId);
         if (authorOtional.isEmpty()) return ResponseEntity.notFound().build();
 
@@ -132,6 +129,7 @@ public class AuthorController implements GenericController {
     })
     public ResponseEntity<Object> updateAuthor(@PathVariable("id") UUID id, @RequestBody @Valid AuthorDTOs dtOs) {
 
+        log.info("Caming request to update author: {}", id);
         Optional<Author> authorOtional = authorServices.getByIdAuthor(id);
         if (authorOtional.isEmpty()) return ResponseEntity.notFound().build();
 

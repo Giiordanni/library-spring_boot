@@ -4,6 +4,7 @@ import com.giordanni.libraryapi.dtos.errors.FieldErrorResponse;
 import com.giordanni.libraryapi.exceptions.InvalidFieldException;
 import com.giordanni.libraryapi.exceptions.OperationNotPermittedException;
 import com.giordanni.libraryapi.exceptions.RegisterDuplicateException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalHandleException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -57,6 +59,7 @@ public class GlobalHandleException {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseError handleErrors(RuntimeException e){
+        log.error("Internal server error: ", e);
         return new ResponseError(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error: " + e.getMessage(), List.of());
     }
 }
