@@ -13,6 +13,23 @@ services:
     networks:
       - library-network
 
+  library-production:
+    container_name: libraryapi-production
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres-library
+    ports:
+      - "8080:8080"
+      - "9090:9090"
+    environment:
+      CLIENT_ID: your_client_id
+      CLIENT_SECRET: your_client_secret
+
+    networks:
+      - library-network
+
 volumes:
   postgres-library-data:
 networks:
