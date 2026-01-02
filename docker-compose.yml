@@ -15,6 +15,7 @@ services:
 
   library-production:
     container_name: libraryapi-production
+    image: giordanni/libraryapi
     build:
       context: .
       dockerfile: Dockerfile
