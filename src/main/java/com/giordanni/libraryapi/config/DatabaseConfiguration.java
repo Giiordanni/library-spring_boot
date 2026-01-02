@@ -21,7 +21,7 @@ public class DatabaseConfiguration {
     @Value("${spring.datasource.password}")
     private String password;
 
-    @Value("${spring.datasource..driver-class-name}")
+    @Value("${spring.datasource.driver-class-name}")
     private String driver;
 
 //    @Bean
@@ -47,7 +47,10 @@ public class DatabaseConfiguration {
         config.setMaximumPoolSize(10); // maximos de conexoes liberadas
         config.setMinimumIdle(1); // tamanho inicial do pool
         config.setPoolName("library-db-pool");
-        config.setMaxLifetime(600000); // quanto tempo uma conexao pode ficar aberta em milisegundos
+
+        // quanto tempo uma conexao pode ficar aberta em milisegundos
+        config.setMaxLifetime(1800000); // 30 minutos
+        config.setIdleTimeout(600000);  // 10 minutos
         config.setConnectionTimeout(100000); // tempo maximo para conseguir uma conexao do pool em milisegundos
         config.setConnectionTestQuery("select 1"); // query para testar se a conexao esta valida
 
