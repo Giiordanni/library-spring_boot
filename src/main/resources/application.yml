@@ -4,7 +4,7 @@ spring:
 
 # jdbc:postgresql://localhost:5439/library_db fora do docker
   datasource:
-    url: jdbc:postgresql://libraryapi-database.c8vi4oymysqy.us-east-1.rds.amazonaws.com:5432/library_db
+    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5439/library_db}
     username: ${DATASOURCE_USERNAME:library_user}
     password: ${DATASOURCE_PASS:library_pass}
     driver-class-name: org.postgresql.Driver
